@@ -6,6 +6,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Criação da tabela "produtos", se ela não existir
+db.run("CREATE TABLE IF NOT EXISTS produtos (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, preco REAL)", (err) => {
+    if (err) {
+        console.error("Erro ao criar a tabela 'produtos':", err.message);
+    } else {
+        console.log("Tabela 'produtos' criada ou já existente.");
+    }
+});
+
 // Rota para listar os produtos
 app.get("/produtos", (req, res) => {
     db.all("SELECT * FROM produtos", (err, rows) => {
